@@ -10,6 +10,12 @@ public class Movimento : MonoBehaviour
     public bool estanaEsquerda;
     public bool estanoCentro;
 
+    public float forcaPulo;
+    public  float velocidadePulo;
+    public float gravidade;
+    public float velocidade;
+    Vector3 direcao;
+
     void Start()
     {
         playerController.GetComponent<CharacterController>();
@@ -18,9 +24,25 @@ public class Movimento : MonoBehaviour
 
     void Update()
     {
-
-        playerController.Move(Vector3.forward * Time.deltaTime * 8);
+        direcao = Vector3.forward * velocidade;
         MovimentoLateral();
+        if (playerController.isGrounded)
+        {
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                velocidadePulo = forcaPulo;
+            }
+        }
+        else
+        {
+            velocidadePulo -= gravidade;
+        }
+        direcao.y = velocidadePulo;
+        playerController.Move(direcao * Time.deltaTime);
+
+
+
+
     }
     void MovimentoLateral()
     {
@@ -50,10 +72,7 @@ public class Movimento : MonoBehaviour
             estanoCentro = false;
         }
        
-
-
-        
-       
     }
+ 
 
 }
